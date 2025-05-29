@@ -25,4 +25,12 @@ public class MissionUtil {
         NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
         return nf.format( price );
     }
+    
+    public static void clearConsole() throws Exception{
+    	try {    		
+    		new ProcessBuilder("cmd","/c", "cls").inheritIO().start().waitFor();
+    	}catch(Exception e) {
+    		throw e;
+    	}
+    }
 }

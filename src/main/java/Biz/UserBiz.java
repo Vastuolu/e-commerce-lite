@@ -1,4 +1,4 @@
-package BIz;
+package Biz;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,13 +10,29 @@ public class UserBiz {
 	
 	private HashMap<String, String> tempCookiesHash = new HashMap<String, String>();
 	private ArrayList<User> users;
+	private String emailRegex = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 	
 	public UserBiz() {
-		
+		users.add(new Customer("User-001","Anthon","anthon@gmail.com","12345678","Jln.Wicaksana No.12","+62812345678910"));
+		users.add(new Seller("Seller-001","Adam","adam@gmail.com","12345678","Toko AdamAlik","Jln.Wicaksana No.22"));
 	}
 	
-	public void login(String inEmail, String inPass) throws Exception{
+	public void login() throws Exception{
 		try {			
+			//INPUT EMAIL
+			System.out.print(">>Masukkan Email: ");
+			String inEmail = MissionUtil.getUserInput();  
+			if(!inEmail.matches(emailRegex)) {				
+				throw new Exception("Format Email Salah.");
+			}
+			
+			//INPUT PASSWORD
+			System.out.print(">>Masukkan Password: ");
+			String inPassword = MissionUtil.getUserInput();
+			if(inPassword.isEmpty() || inPassword.length() < 6) {				
+				throw new Exception("Password tidak boleh kosong atau kurang dari 6 huruf.");
+			}
+			
 			User userData = null;
 			for (User user : users) {
 				if(user.getEmail().equals(inEmail)) {
@@ -27,7 +43,7 @@ public class UserBiz {
 			
 			if(userData == null) {
 				throw new Exception("Email atau password Salah.");
-			}else if(!userData.matchedPassword(inPass)) {
+			}else if(!userData.matchedPassword(inPassword)) {
 				throw new Exception("Email atau Password Salah.");
 			}
 			
@@ -53,8 +69,7 @@ public class UserBiz {
 			//INPUT EMAIL
 			System.out.print(">>Masukkan Email: ");
 			String email = MissionUtil.getUserInput();  
-			String regex = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
-			if(!email.matches(regex)) {				
+			if(!email.matches(emailRegex)) {				
 				throw new Exception("Format Email Salah.");
 			}
 	
