@@ -2,6 +2,7 @@ package Biz;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import User.*;
 import Util.MissionUtil;
@@ -13,6 +14,7 @@ public class UserBiz {
 	private String emailRegex = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 	
 	public UserBiz() {
+		users = new ArrayList<User>();
 		users.add(new Customer("User-001","Anthon","anthon@gmail.com","12345678","Jln.Wicaksana No.12","+62812345678910"));
 		users.add(new Seller("Seller-001","Adam","adam@gmail.com","12345678","Toko AdamAlik","Jln.Wicaksana No.22"));
 	}
@@ -23,14 +25,14 @@ public class UserBiz {
 			System.out.print(">>Masukkan Email: ");
 			String inEmail = MissionUtil.getUserInput();  
 			if(!inEmail.matches(emailRegex)) {				
-				throw new Exception("Format Email Salah.");
+				throw new Exception("[Error] Format Email Salah.");
 			}
 			
 			//INPUT PASSWORD
 			System.out.print(">>Masukkan Password: ");
 			String inPassword = MissionUtil.getUserInput();
 			if(inPassword.isEmpty() || inPassword.length() < 6) {				
-				throw new Exception("Password tidak boleh kosong atau kurang dari 6 huruf.");
+				throw new Exception("[Error] Password tidak boleh kosong atau kurang dari 6 huruf.");
 			}
 			
 			User userData = null;
@@ -42,9 +44,9 @@ public class UserBiz {
 			}
 			
 			if(userData == null) {
-				throw new Exception("Email atau password Salah.");
+				throw new Exception("[Error] Email atau password Salah.");
 			}else if(!userData.matchedPassword(inPassword)) {
-				throw new Exception("Email atau Password Salah.");
+				throw new Exception("[Error] Email atau Password Salah.");
 			}
 			
 			tempCookiesHash.put("id", userData.getId());
@@ -52,6 +54,8 @@ public class UserBiz {
 			tempCookiesHash.put("email", userData.getEmail());
 			tempCookiesHash.put("userType", userData instanceof Customer ? "Customer" : "Seller");
 			Main.Main.userCookies = tempCookiesHash;
+			System.out.println("@Login Berhasil. Selamat Datang "+userData.getName()+"...");
+			TimeUnit.SECONDS.sleep(3);
 		} catch (Exception e) {
 			throw e;
 		}			
@@ -63,21 +67,21 @@ public class UserBiz {
 			System.out.print(">>Masukkan Name: ");
 			String name = MissionUtil.getUserInput();
 			if(name.isEmpty() || name.length() < 3) {
-				throw new Exception("Nama tidak boleh kosong atau kurang dari 3 huruf.");
+				throw new Exception("[Error] Nama tidak boleh kosong atau kurang dari 3 huruf.");
 			}
 			
 			//INPUT EMAIL
 			System.out.print(">>Masukkan Email: ");
 			String email = MissionUtil.getUserInput();  
 			if(!email.matches(emailRegex)) {				
-				throw new Exception("Format Email Salah.");
+				throw new Exception("[Error] Format Email Salah.");
 			}
 	
 			//INPUT PASSWORD
 			System.out.print(">>Masukkan Password: ");
 			String password = MissionUtil.getUserInput();
 			if(password.isEmpty() || password.length() < 6) {				
-				throw new Exception("Password tidak boleh kosong atau kurang dari 6 huruf.");
+				throw new Exception("[Error] Password tidak boleh kosong atau kurang dari 6 huruf.");
 			}
 			
 			//INPUT USER TYPE
@@ -85,8 +89,8 @@ public class UserBiz {
 			System.out.println(">2. Seller");
 			System.out.print(">>Pilih Jenis User(1/2): ");
 			int typeChoose = Integer.parseInt(MissionUtil.getUserInput());
-			if(typeChoose != 1 || typeChoose != 2) {				
-				throw new Exception("Pilihan User Type antara 1 atau 2.");
+			if(typeChoose != 1 && typeChoose != 2) {				
+				throw new Exception("[Error] Pilihan User Type antara 1 atau 2.");
 			}
 
 			String telpOrTok = null;
@@ -100,13 +104,13 @@ public class UserBiz {
 			
 			//INPUT ADDRESS
 			String outAddress = typeChoose == 1 ? ">>Alamat Rumah: " : ">>Alamat Toko: ";
-			System.out.println(outAddress);
+			System.out.print(outAddress);
 			String address = MissionUtil.getUserInput();
-			if(address.isEmpty() || address.length() < 6) {				
-				throw new Exception("Alamat tidak boleh kosong atau kurang dari 6 huruf.");
+			if(address.isEmpty()) {				
+				throw new Exception("[Error] Alamat tidak boleh kosong");
 			}
 			
-			String userId = "User-"+users.size();
+			String userId = "User-"+users.size()+1;
 			if(typeChoose == 1) {				
 				users.add(new Customer(userId,name,email,password,address,telpOrTok));
 			}else {
@@ -118,10 +122,23 @@ public class UserBiz {
 			tempCookiesHash.put("email", email);
 			tempCookiesHash.put("userType", typeChoose == 1 ? "Customer" : "Seller");
 			Main.Main.userCookies = tempCookiesHash;
+			System.out.println("@Register Berhasil. Selamat Datang "+name+"...");
+			TimeUnit.SECONDS.sleep(3);
 		}catch(NumberFormatException e) {
 			throw e;
 		}catch(Exception e) {
 			throw e;
+		}
+	}
+	
+	public void logout() {
+		Main.Main.userCookies = null;
+		System.out.println("@Logout Berhasil. Selamat Tinggal...");
+		System.exit(0);
+		try {
+			TimeUnit.SECONDS.sleep(3);
+		} catch (InterruptedException e) {
+			System.out.println("[Error] Log out gagal.");
 		}
 	}
 }
