@@ -1,39 +1,37 @@
 package Page;
 
-import Util.MissionUtil;
+import Util.CommonUtil;
 //tess
 public class Page {
 	private static void header() {
 		System.out.println("=================================");
-		System.out.println("+++++++++++++++++++++++++++++++++");		
 	}
 	
 	private static void header(String pageName) {
 		System.out.println("=================================");
 		System.out.println("-+<"+pageName.toUpperCase()+">+-");
-		System.out.println("+++++++++++++++++++++++++++++++++");
+		System.out.println("=================================");
 	}
 
 	private static void footer() {
-		System.out.println("+++++++++++++++++++++++++++++++++");
 		System.out.println("=================================");		
 	}
 	
-	public static void splashScreen() throws Exception{
+	public static void splashScreen(){
 		header();
 		System.out.println("Selamat Datang di E-Commerce Lite");
-		System.out.println("Tekan Enter Untuk Melanjutkan....");
 		footer();
-		MissionUtil.getUserInput();
+		System.out.println("Tekan Enter Untuk Melanjutkan....");
+		CommonUtil.getUserInput();
 		try {			
-			MissionUtil.clearConsole();
+			CommonUtil.clearConsole();
 		} catch (Exception e) {
-			throw e;
+			System.out.println(e.getMessage());
 		}
 	}
 	
 	public static void loginRegisterMenu() {
-		header();
+		header("E-Commerce Lite");
 		System.out.println("1. Login");
 		System.out.println("2. Register");
 		footer();

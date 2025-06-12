@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public class MissionUtil {
+public class CommonUtil {
 	public static String getUserInput() {
         
         BufferedReader br = new BufferedReader( new InputStreamReader( System.in ) );
@@ -22,15 +22,16 @@ public class MissionUtil {
     }
     
     public static String moneyFormat( int price ) {
-        NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
+    	NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("id-ID"));
         return nf.format( price );
     }
     
-    public static void clearConsole() throws Exception{
+    public static void clearConsole() {
     	try {    		
     		new ProcessBuilder("cmd","/c", "cls").inheritIO().start().waitFor();
+    		
     	}catch(Exception e) {
-    		throw e;
+    		System.out.println("Gagal membersihkan terminal.");;
     	}
     }
 }

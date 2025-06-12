@@ -1,11 +1,10 @@
-package Biz;
+package User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-import User.*;
-import Util.MissionUtil;
+import Util.CommonUtil;
 
 public class UserBiz {
 	
@@ -16,21 +15,26 @@ public class UserBiz {
 	public UserBiz() {
 		users = new ArrayList<User>();
 		users.add(new Customer("User-001","Anthon","anthon@gmail.com","12345678","Jln.Wicaksana No.12","+62812345678910"));
-		users.add(new Seller("Seller-001","Adam","adam@gmail.com","12345678","Toko AdamAlik","Jln.Wicaksana No.22"));
+		
+        users.add(new Seller("SELLER-0001", "Adam", "adam@gmail.com", "12345678", "Toko AdamAlik", "Jln. Wicaksana No.22"));
+        users.add(new Seller("SELLER-0002", "Bella", "bella@gmail.com", "12345678", "Bella Store", "Jln. Kenanga No.25"));
+        users.add(new Seller("SELLER-0003", "Carlos", "carlos@gmail.com", "12345678", "Carlos Mart", "Jln. Mawar No.30"));
+        users.add(new Seller("SELLER-0004", "Daisy", "daisy@gmail.com", "12345678", "Daisy Shop", "Jln. Melati No.33"));
+        users.add(new Seller("SELLER-0005", "Edward", "edward@gmail.com", "12345678", "Edward Supplies", "Jln. Dahlia No.40"));
 	}
 	
 	public void login() throws Exception{
 		try {			
 			//INPUT EMAIL
 			System.out.print(">>Masukkan Email: ");
-			String inEmail = MissionUtil.getUserInput();  
+			String inEmail = CommonUtil.getUserInput();  
 			if(!inEmail.matches(emailRegex)) {				
 				throw new Exception("[Error] Format Email Salah.");
 			}
 			
 			//INPUT PASSWORD
 			System.out.print(">>Masukkan Password: ");
-			String inPassword = MissionUtil.getUserInput();
+			String inPassword = CommonUtil.getUserInput();
 			if(inPassword.isEmpty() || inPassword.length() < 6) {				
 				throw new Exception("[Error] Password tidak boleh kosong atau kurang dari 6 huruf.");
 			}
@@ -65,21 +69,21 @@ public class UserBiz {
 		try {
 			//INPUT NAMA
 			System.out.print(">>Masukkan Name: ");
-			String name = MissionUtil.getUserInput();
+			String name = CommonUtil.getUserInput();
 			if(name.isEmpty() || name.length() < 3) {
 				throw new Exception("[Error] Nama tidak boleh kosong atau kurang dari 3 huruf.");
 			}
 			
 			//INPUT EMAIL
 			System.out.print(">>Masukkan Email: ");
-			String email = MissionUtil.getUserInput();  
+			String email = CommonUtil.getUserInput();  
 			if(!email.matches(emailRegex)) {				
 				throw new Exception("[Error] Format Email Salah.");
 			}
 	
 			//INPUT PASSWORD
 			System.out.print(">>Masukkan Password: ");
-			String password = MissionUtil.getUserInput();
+			String password = CommonUtil.getUserInput();
 			if(password.isEmpty() || password.length() < 6) {				
 				throw new Exception("[Error] Password tidak boleh kosong atau kurang dari 6 huruf.");
 			}
@@ -88,7 +92,7 @@ public class UserBiz {
 			System.out.println(">1. Customer");
 			System.out.println(">2. Seller");
 			System.out.print(">>Pilih Jenis User(1/2): ");
-			int typeChoose = Integer.parseInt(MissionUtil.getUserInput());
+			int typeChoose = Integer.parseInt(CommonUtil.getUserInput());
 			if(typeChoose != 1 && typeChoose != 2) {				
 				throw new Exception("[Error] Pilihan User Type antara 1 atau 2.");
 			}
@@ -96,16 +100,16 @@ public class UserBiz {
 			String telpOrTok = null;
 			if(typeChoose == 1 ) {
 				System.out.print(">>Masukkan Nomor Telepon: ");
-				telpOrTok = MissionUtil.getUserInput();				
+				telpOrTok = CommonUtil.getUserInput();				
 			}else {
 				System.out.print(">>Masukkan Nama Toko: ");
-				telpOrTok = MissionUtil.getUserInput();								
+				telpOrTok = CommonUtil.getUserInput();								
 			}
 			
 			//INPUT ADDRESS
 			String outAddress = typeChoose == 1 ? ">>Alamat Rumah: " : ">>Alamat Toko: ";
 			System.out.print(outAddress);
-			String address = MissionUtil.getUserInput();
+			String address = CommonUtil.getUserInput();
 			if(address.isEmpty()) {				
 				throw new Exception("[Error] Alamat tidak boleh kosong");
 			}
@@ -140,5 +144,14 @@ public class UserBiz {
 		} catch (InterruptedException e) {
 			System.out.println("[Error] Log out gagal.");
 		}
+	}
+	
+	public User getUserById(String userId) {
+		for (User user : users) {
+			if(user.getId().equals(userId)) {
+				return user;
+			}
+		}
+		return null;
 	}
 }
