@@ -47,6 +47,18 @@ public class Cart {
 		return -1;
 	}
 	
+	public ArrayList<CartItem> getItems() {
+		return items;
+	}
+
+	public int getTotalCart() {
+		int total = 0;
+		for (CartItem cartItem : items) {
+			total += cartItem.getSubTotal();
+		}
+		return total;
+	}
+	
 	public void printAllitems() {
 		if(items.size() == 0) System.out.println("\t<<Keranjang Kosong>>");
 		for (CartItem item : items) {

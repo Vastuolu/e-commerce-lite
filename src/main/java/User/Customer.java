@@ -9,7 +9,6 @@ public class Customer extends User{
 	private String address;
 	private String phoneNumber;
 	private Cart cart;
-//	private ArrayList<Product> wishlist;
 	
 	public Customer(String id, String name, String email, String password, String address, String phoneNumber) {
 		super(id, name, email, password);
@@ -20,6 +19,14 @@ public class Customer extends User{
 
 	public Cart getCart() {
 		return cart;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
 	}	
 	
 	

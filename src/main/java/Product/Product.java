@@ -10,7 +10,6 @@ public class Product {
 	private int price;
 	private int stock;
 	private String sellerId;
-	private ArrayList<Product> products;
 
 	public Product(String id, String name, int price, int stock, String sellerId) {
 		this.id = id;
@@ -48,20 +47,8 @@ public class Product {
 		return id;
 	}
 
-	public void addProduct() {
-		System.out.print(">>Masukkan Email: ");
-		String inEmail = CommonUtil.getUserInput();  
-//		if(!inEmail.matches(emailRegex)) {				
-//			throw new Exception("[Error] Format Email Salah.");
-//		}
-	}
-
-	public void editProduct(Product product) {
-		
-	}
-
-	public void deleteProductbyId(String productId) {
-		
+	public String getSellerId() {
+		return sellerId;
 	}
 
 	public String toString() {

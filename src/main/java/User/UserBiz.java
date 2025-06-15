@@ -9,18 +9,20 @@ import Util.CommonUtil;
 public class UserBiz implements IUserBiz{
 	
 	private HashMap<String, String> tempCookiesHash = new HashMap<String, String>();
-	private ArrayList<User> users;
-	private String emailRegex = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
-	
-	public UserBiz() {
-		users = new ArrayList<User>();
-		users.add(new Customer("User-001","Anthon","anthon@gmail.com","12345678","Jln.Wicaksana No.12","+62812345678910"));
+	private HashMap<String, User> users;
 		
-        users.add(new Seller("SELLER-0001", "Adam", "adam@gmail.com", "12345678", "Toko AdamAlik", "Jln. Wicaksana No.22"));
-        users.add(new Seller("SELLER-0002", "Bella", "bella@gmail.com", "12345678", "Bella Store", "Jln. Kenanga No.25"));
-        users.add(new Seller("SELLER-0003", "Carlos", "carlos@gmail.com", "12345678", "Carlos Mart", "Jln. Mawar No.30"));
-        users.add(new Seller("SELLER-0004", "Daisy", "daisy@gmail.com", "12345678", "Daisy Shop", "Jln. Melati No.33"));
-        users.add(new Seller("SELLER-0005", "Edward", "edward@gmail.com", "12345678", "Edward Supplies", "Jln. Dahlia No.40"));
+	public UserBiz() {
+		users = new HashMap<String,User>();
+		
+		Seller adam = new Seller("SELL-0001", "Adam", "adam@gmail.com", "12345678", "Toko AdamAlik", "Jln. Wicaksana No.22");
+		adam.addProduct("Celana Jeans", 100000, 100);
+		adam.addProduct("Baju Koko", 120000, 50);
+        users.put("SELL-0001",adam);
+
+        Customer anthon = new Customer("CUST-001","Anthon","anthon@gmail.com","12345678","Jln.Wicaksana No.12","+62812345678910");
+        anthon.getCart().addItem(adam.getProducts().getFirst(), 2);
+        anthon.getCart().addItem(adam.getProducts().getLast(), 5);
+        users.put("CUST-001",anthon);
 	}
 	
 	public void login() throws Exception{
@@ -28,7 +30,7 @@ public class UserBiz implements IUserBiz{
 			//INPUT EMAIL
 			System.out.print(">>Masukkan Email: ");
 			String inEmail = CommonUtil.getUserInput();  
-			if(!inEmail.matches(emailRegex)) {				
+			if(!inEmail.matches(EMAIL_REGEX)) {				
 				throw new Exception("[Error] Format Email Salah.");
 			}
 			
@@ -40,9 +42,9 @@ public class UserBiz implements IUserBiz{
 			}
 			
 			User userData = null;
-			for (User user : users) {
-				if(user.getEmail().equals(inEmail)) {
-					userData = user;
+			for (String id : users.keySet()) {
+				if(users.get(id).getEmail().equals(inEmail)) {
+					userData = users.get(id);
 					break;
 				}
 			}
@@ -74,7 +76,7 @@ public class UserBiz implements IUserBiz{
 			//INPUT EMAIL
 			System.out.print(">>Masukkan Email: ");
 			String email = CommonUtil.getUserInput();  
-			if(!email.matches(emailRegex)) {				
+			if(!email.matches(EMAIL_REGEX)) {				
 				throw new Exception("[Error] Format Email Salah.");
 			}
 	
@@ -114,14 +116,14 @@ public class UserBiz implements IUserBiz{
 				throw new Exception("[Error] Alamat tidak boleh kosong");
 			}
 			
-			String userId = "User-"+users.size()+1;
+			String userId = typeChoose == 1 ? "CUST" : "SELL" + "-"+users.size()+1;
 			User userData;
 			if(typeChoose == 1) {
 				userData = new Customer(userId,name,email,password,address,telpOrTok);
 			}else {
 				userData = new Seller(userId,name,email,password,telpOrTok,address);				
 			}
-			users.add(userData);
+			users.put(userId,userData);
 			
 			Main.Main.userCookies = userData;
 			System.out.println("@Register Berhasil. Selamat Datang "+name+"...");
@@ -140,11 +142,10 @@ public class UserBiz implements IUserBiz{
 	}
 	
 	public User getUserById(String userId) {
-		for (User user : users) {
-			if(user.getId().equals(userId)) {
-				return user;
-			}
-		}
-		return null;
+		return users.get(userId);
+	}
+	
+	public HashMap<String,User> getAllUser(){
+		return users;
 	}
 }
