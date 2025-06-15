@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 import Page.CustomerPage;
 import Page.Page;
+import Page.SellerPage;
 import Product.ProductBiz;
 import User.Customer;
 import User.User;
@@ -16,6 +17,7 @@ public class Main {
 	public static void main(String[] args) {
 		UserBiz uBiz = new UserBiz();
 		ProductBiz pBiz = new ProductBiz();
+		pBiz.refreshProductBiz(uBiz);
 		int pilihan = -1;
 
 		//STARTING POINT OF PAGE
@@ -78,7 +80,7 @@ public class Main {
 						CustomerPage.cartMenu();
 						break;
 					case 3:
-						
+						CustomerPage.checkoutMenu(uBiz);
 						break;
 					case 9:
 						uBiz.logout();
@@ -101,20 +103,29 @@ public class Main {
 		int pilihan = -1;
 		while(pilihan != 9) {
 			try {
-//				SellerPage.berandaMenu();
+				SellerPage.berandaMenu();
 				pilihan = Integer.parseInt(CommonUtil.getUserInput());
 				CommonUtil.clearConsole();
 				switch (pilihan) {
 				case 1:
-					
+					SellerPage.listOwnedProduct();
+					break;
+				case 2:
+					SellerPage.addProduct(pBiz);
+					break;
+				case 3:
+					SellerPage.editProduct(pBiz);
+					break;
+				case 4:
+					SellerPage.deleteProduct(pBiz);					
 					break;
 				case 9:
-					
-					break;
-
+					uBiz.logout();
+					return;
 				default:
 					break;
 				}
+				pBiz.refreshProductBiz(uBiz);
 			} catch (Exception e) {
 				CommonUtil.clearConsole();
 				System.out.println(e.getMessage());
