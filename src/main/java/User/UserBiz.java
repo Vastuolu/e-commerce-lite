@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import Util.CommonUtil;
 
-public class UserBiz {
+public class UserBiz implements IUserBiz{
 	
 	private HashMap<String, String> tempCookiesHash = new HashMap<String, String>();
 	private ArrayList<User> users;
