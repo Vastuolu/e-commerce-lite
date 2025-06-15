@@ -53,13 +53,10 @@ public class UserBiz {
 				throw new Exception("[Error] Email atau Password Salah.");
 			}
 			
-			tempCookiesHash.put("id", userData.getId());
-			tempCookiesHash.put("name", userData.getName());
-			tempCookiesHash.put("email", userData.getEmail());
-			tempCookiesHash.put("userType", userData instanceof Customer ? "Customer" : "Seller");
-			Main.Main.userCookies = tempCookiesHash;
+			Main.Main.userCookies = userData;
 			System.out.println("@Login Berhasil. Selamat Datang "+userData.getName()+"...");
 			TimeUnit.SECONDS.sleep(3);
+			CommonUtil.clearConsole();
 		} catch (Exception e) {
 			throw e;
 		}			
@@ -68,7 +65,7 @@ public class UserBiz {
 	public void register() throws Exception{
 		try {
 			//INPUT NAMA
-			System.out.print(">>Masukkan Name: ");
+			System.out.print(">>Masukkan Nama: ");
 			String name = CommonUtil.getUserInput();
 			if(name.isEmpty() || name.length() < 3) {
 				throw new Exception("[Error] Nama tidak boleh kosong atau kurang dari 3 huruf.");
@@ -105,6 +102,9 @@ public class UserBiz {
 				System.out.print(">>Masukkan Nama Toko: ");
 				telpOrTok = CommonUtil.getUserInput();								
 			}
+			if(telpOrTok.isEmpty()) {				
+				throw new Exception("[Error] Data tidak boleh kosong");
+			}
 			
 			//INPUT ADDRESS
 			String outAddress = typeChoose == 1 ? ">>Alamat Rumah: " : ">>Alamat Toko: ";
@@ -115,19 +115,18 @@ public class UserBiz {
 			}
 			
 			String userId = "User-"+users.size()+1;
-			if(typeChoose == 1) {				
-				users.add(new Customer(userId,name,email,password,address,telpOrTok));
+			User userData;
+			if(typeChoose == 1) {
+				userData = new Customer(userId,name,email,password,address,telpOrTok);
 			}else {
-				users.add(new Seller(userId,name,email,password,telpOrTok,address));				
+				userData = new Seller(userId,name,email,password,telpOrTok,address);				
 			}
+			users.add(userData);
 			
-			tempCookiesHash.put("id", userId);
-			tempCookiesHash.put("name", name);
-			tempCookiesHash.put("email", email);
-			tempCookiesHash.put("userType", typeChoose == 1 ? "Customer" : "Seller");
-			Main.Main.userCookies = tempCookiesHash;
+			Main.Main.userCookies = userData;
 			System.out.println("@Register Berhasil. Selamat Datang "+name+"...");
 			TimeUnit.SECONDS.sleep(3);
+			CommonUtil.clearConsole();
 		}catch(NumberFormatException e) {
 			throw e;
 		}catch(Exception e) {
@@ -138,12 +137,6 @@ public class UserBiz {
 	public void logout() {
 		Main.Main.userCookies = null;
 		System.out.println("@Logout Berhasil. Selamat Tinggal...");
-		System.exit(0);
-		try {
-			TimeUnit.SECONDS.sleep(3);
-		} catch (InterruptedException e) {
-			System.out.println("[Error] Log out gagal.");
-		}
 	}
 	
 	public User getUserById(String userId) {

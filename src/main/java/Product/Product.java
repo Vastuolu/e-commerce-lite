@@ -1,19 +1,20 @@
 package Product;
 
+import java.util.ArrayList;
+
 import Util.CommonUtil;
 
 public class Product {
 	private String id;
 	private String name;
-	private String desc;
 	private int price;
 	private int stock;
 	private String sellerId;
+	private ArrayList<Product> products;
 
-	public Product(String id, String name, String desc, int price, int stock, String sellerId) {
+	public Product(String id, String name, int price, int stock, String sellerId) {
 		this.id = id;
 		this.name = name;
-		this.desc = desc;
 		this.price = price;
 		this.stock = stock;
 		this.sellerId = sellerId;
@@ -25,14 +26,6 @@ public class Product {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getDesc() {
-		return desc;
-	}
-
-	public void setDesc(String desc) {
-		this.desc = desc;
 	}
 
 	public int getPrice() {
@@ -55,13 +48,24 @@ public class Product {
 		return id;
 	}
 
-	
-	public String toStringDetail() {
-		return "ID: " + id + "\nNama: " + name + "\nDeskripsi: " + desc + "\nHarga: " + CommonUtil.moneyFormat(price)+ "\nStok: " + stock;
+	public void addProduct() {
+		System.out.print(">>Masukkan Email: ");
+		String inEmail = CommonUtil.getUserInput();  
+//		if(!inEmail.matches(emailRegex)) {				
+//			throw new Exception("[Error] Format Email Salah.");
+//		}
 	}
 
-	public String toStringList() {
-		return id + "\t" + name + "\t" + CommonUtil.moneyFormat(price)+ "\nStok: " + stock;
+	public void editProduct(Product product) {
+		
+	}
+
+	public void deleteProductbyId(String productId) {
+		
+	}
+
+	public String toString() {
+		return id + "\t" + name + "\t" + CommonUtil.moneyFormat(price)+ "\tStok: " + stock;
 	}
 	
 	

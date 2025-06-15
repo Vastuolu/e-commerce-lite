@@ -1,22 +1,35 @@
 package Page;
 
+import java.util.concurrent.TimeUnit;
+
+import Cart.Cart;
+import Main.Main;
+import Product.Product;
+import Product.ProductBiz;
+import User.Customer;
+import User.UserBiz;
 import Util.CommonUtil;
 //tess
 public class Page {
-	private static void header() {
+	protected static void header() {
 		System.out.println("=================================");
 	}
 	
-	private static void header(String pageName) {
+	protected static void header(String pageName) {
 		System.out.println("=================================");
 		System.out.println("-+<"+pageName.toUpperCase()+">+-");
 		System.out.println("=================================");
 	}
 
-	private static void footer() {
+	protected static void footer() {
 		System.out.println("=================================");		
 	}
-	
+
+	protected static void footerChoice() {
+		System.out.println("=================================");	
+		System.out.print(">>Masukkan Pilihan: ");
+	}
+
 	public static void splashScreen(){
 		header();
 		System.out.println("Selamat Datang di E-Commerce Lite");
@@ -34,6 +47,11 @@ public class Page {
 		header("E-Commerce Lite");
 		System.out.println("1. Login");
 		System.out.println("2. Register");
-		footer();
+		System.out.println("0. Keluar dari program");
+		footerChoice();
 	}
+	
+
+	
+
 }
